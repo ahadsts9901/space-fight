@@ -1,14 +1,27 @@
-//board
+// board
 let tileSize = 32;
 let rows = 16;
 let columns = 16;
-
 let board;
 let boardWidth = tileSize * columns; // 32 * 16
 let boardHeight = tileSize * rows; // 32 * 16
 let context;
 
-//ship
+// score
+let score = 0;
+let scoreOutput = document.getElementById("score")
+
+// buttons
+let left = document.getElementById("left")
+let right = document.getElementById("right")
+let bullet = document.getElementById("bullet")
+
+// call functions on buttons click
+left.addEventListener("click", () => moveShip({ code: "ArrowLeft" }));
+right.addEventListener("click", () => moveShip({ code: "ArrowRight" }));
+bullet.addEventListener("click", () => shoot({ code: "Space" }));
+
+// ship
 let shipWidth = tileSize * 2.25;
 let shipHeight = tileSize * 1.5;
 let shipX = tileSize * columns / 2 - tileSize;
@@ -24,7 +37,7 @@ let ship = {
 let shipImg;
 let shipVelocityX = tileSize; //ship moving speed
 
-//aliens
+// aliens
 let alienArray = [];
 let alienWidth = tileSize * 1.2;
 let alienHeight = tileSize * 1.2;
@@ -37,12 +50,27 @@ let alienColumns = 3;
 let alienCount = 0; //number of aliens to defeat
 let alienVelocityX = 1; //alien moving speed
 
-//bullets
+// bullets
 let bulletArray = [];
 let bulletVelocityY = -10; //bullet moving speed
 
-let score = 0;
+// game over
+
 let gameOver = false;
+
+
+// game over
+
+// function showGameOverMessage() {
+//     Swal.fire({
+//         icon: "error",
+//         title: "Game Over",
+//         text: '<a class="again" href="./index.html">Start Again</a>',
+//         showConfirmButton: true,
+//         confirmButtonText: "OK",
+//         confirmButtonColor: "#18171f",
+//     });
+// }
 
 window.onload = function() {
     board = document.getElementById("board");
@@ -50,11 +78,7 @@ window.onload = function() {
     board.height = boardHeight;
     context = board.getContext("2d"); //used for drawing on the board
 
-    //draw initial ship
-    // context.fillStyle="green";
-    // context.fillRect(ship.x, ship.y, ship.width, ship.height);
-
-    //load images
+    // show images
     shipImg = new Image();
     shipImg.src = "./assets/spaceship.png";
     shipImg.onload = function() {
@@ -75,26 +99,27 @@ function update() {
     requestAnimationFrame(update);
 
     if (gameOver) {
+        // showGameOverMessage()
         return;
     }
 
     context.clearRect(0, 0, board.width, board.height);
 
-    //ship
+    // ship
     context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
 
-    //alien
+    // alien
     for (let i = 0; i < alienArray.length; i++) {
         let alien = alienArray[i];
         if (alien.alive) {
             alien.x += alienVelocityX;
 
-            //if alien touches the borders
+            // if alien touches the borders
             if (alien.x + alien.width >= board.width || alien.x <= 0) {
                 alienVelocityX *= -1;
                 alien.x += alienVelocityX * 2;
 
-                //move all aliens up by one row
+                // move all aliens up by one row
                 for (let j = 0; j < alienArray.length; j++) {
                     alienArray[j].y += alienHeight;
                 }
@@ -107,14 +132,14 @@ function update() {
         }
     }
 
-    //bullets
+    // bullets
     for (let i = 0; i < bulletArray.length; i++) {
         let bullet = bulletArray[i];
         bullet.y += bulletVelocityY;
         context.fillStyle = "white";
         context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
 
-        //bullet collision with aliens
+        // bullet collision with aliens
         for (let j = 0; j < alienArray.length; j++) {
             let alien = alienArray[j];
             if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
@@ -122,39 +147,37 @@ function update() {
                 alien.alive = false;
                 alienCount--;
                 score += 100;
+                scoreOutput.innerHTML = score
             }
         }
     }
 
-    //clear bullets
+    // clear bullets
     while (bulletArray.length > 0 && (bulletArray[0].used || bulletArray[0].y < 0)) {
-        bulletArray.shift(); //removes the first element of the array
+        bulletArray.shift();
     }
 
-    //next level
+    // next level
     if (alienCount == 0) {
-        //increase the number of aliens in columns and rows by 1
-        score += alienColumns * alienRows * 100; //bonus points :)
-        alienColumns = Math.min(alienColumns + 1, columns / 2 - 2); //cap at 16/2 -2 = 6
-        alienRows = Math.min(alienRows + 1, rows - 4); //cap at 16-4 = 12
+        // increase the number of aliens in columns and rows by 1
+        score += alienColumns * alienRows * 100; // bonus points
+        alienColumns = Math.min(alienColumns + 1, columns / 2 - 2); // cap at 16/2 -2 = 6
+        alienRows = Math.min(alienRows + 1, rows - 4); // cap at 16-4 = 12
         if (alienVelocityX > 0) {
-            alienVelocityX += 0.2; //increase the alien movement speed towards the right
+            alienVelocityX += 0.2; // increase the alien movement speed towards the right
         } else {
-            alienVelocityX -= 0.2; //increase the alien movement speed towards the left
+            alienVelocityX -= 0.2; // increase the alien movement speed towards the left
         }
         alienArray = [];
         bulletArray = [];
         createAliens();
     }
-
-    //score
-    // context.fillStyle = "white";
-    // context.font = "16px courier";
-    // context.fillText(score, 5, 20);
 }
 
 function moveShip(e) {
+
     if (gameOver) {
+        showGameOverMessage()
         return;
     }
 

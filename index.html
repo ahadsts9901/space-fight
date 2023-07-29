@@ -24,8 +24,8 @@
 </head>
 
 <body>
+    <p class="instructions center">Press right arrow key, left arrow key, space key to move and fire.</p>
     <row class="space-around">
-        <h3 id="score">0</h3>
         <h1 class="blue"> Space Fight</h1>
         <div class="dropdown">
             <button class="drop-down" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,16 +41,17 @@
         </div>
     </row>
 
+    <h3>Score : <span id="score">0</span></h3>
     <canvas id="board"></canvas>
 
     <column>
         <row>
-            <button type="button" class="button" id="left"><h2 class="bi bi-arrow-left"></h2></button>
-            <button type="button" class="button" id="bullet"><h2 class="bi bi-joystick"></h2></button>
-            <button type="button" class="button" id="right"><h2 class="bi bi-arrow-right"></h2></button>
+            <button type="button" class="button" id="left"><p class="bi bi-arrow-left"></p></button>
+            <button type="button" class="button" id="right"><p class="bi bi-arrow-right"></p></button>
+            <button type="button" class="button" id="bullet"><p class="bi bi-joystick"></p></button>
         </row>
 
-        <button type="reset" class="reset" id="reset">Reset</button>
+        <a href="./index.html" class="reset" id="reset">Reset</a>
     </column>
 
     <!-- <p class="center">Thanks For Visiting Regards! Muhammad Ahad&copy;</p> -->

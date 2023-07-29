@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url(./assets/background.jpg);
+    background-image: url(./assets/background.webp);
     background-repeat: repeat;
     background-position: center;
     background-size: 50%;
@@ -17,10 +17,18 @@ body {
     justify-content: space-between;
     align-items: center;
     row-gap: 2em!important;
-    padding: 2em 0em;
+    padding: 2em 0em 0em 0em;
     margin: 0em;
     width: 98vw;
     height: 100vh;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body::-moz-scrollbar {
+    display: none;
 }
 
 .blue {
@@ -50,6 +58,10 @@ h6 {
     margin: 0em;
 }
 
+.drop-down:hover {
+    background-color: #18171f00;
+}
+
 .dropdown-menu.show {
     background-color: #18171f;
     color: #e6e5ea;
@@ -60,6 +72,7 @@ h6 {
     /* background-color: #e6e5ea; */
     color: #18171f;
     border: 0px;
+    justify-content: left;
 }
 
 .list {
@@ -90,23 +103,22 @@ row {
     column-gap: 1em;
 }
 
-column,
-form {
+column {
     display: flex;
     justify-content: center;
     /* justify-content: right; */
     flex-direction: column;
     align-items: center;
-    padding: 0.5em;
-    row-gap: 1em;
+    padding: 0em;
+    row-gap: 0em;
     width: 100%;
 }
 
 .button {
     color: #82c7ff;
     background-color: #18171f;
-    width: 3em;
-    height: 3em;
+    width: 2em;
+    height: 2em;
     border: 2px solid #82c7ff;
     /* border-radius: 15px; */
     font-size: 1em;
@@ -121,8 +133,8 @@ form {
 .reset {
     color: #82c7ff;
     background-color: #18171f;
-    width: 12em;
-    height: 3em;
+    width: 8em;
+    height: 2em;
     border: 2px solid #82c7ff;
     /* border-radius: 15px; */
     font-size: 1.2em;
@@ -150,9 +162,37 @@ button:active {
     /* background-color: #82c7ff; */
 }
 
+#score {
+    margin-left: 0.5em;
+}
+
+.instructions {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    z-index: 20;
+}
+
+.again {
+    background-color: #18171f;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.8em;
+    border-radius: 5px;
+    width: fit-content;
+    margin-left: auto!important;
+    margin-right: auto!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media only screen and (max-width: 770px) {
     #board {
         width: 80vmin;
         height: 80vmin;
+    }
+    .instructions {
+        display: none;
     }
 }
